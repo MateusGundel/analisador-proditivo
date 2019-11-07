@@ -19,7 +19,9 @@ def analisar(request):
         response_data = {}
         print(object_from_view)
         transform = transformar_glc.transformation()
-        print(transform.recursao_a_esquerda(transform.tratar_objeto(object_from_view)))
+        # print(transform.recursao_a_esquerda(transform.tratar_objeto(object_from_view)))
+        objetos_tratados = transform.tratar_objeto(object_from_view)
+
         print(response_data)
         return HttpResponse(
             json.dumps(response_data)
