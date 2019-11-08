@@ -93,8 +93,18 @@ class Analiser():
             final_list.append(temp_list)
         return final_list
                 
-    def reconhecer_entrada(self):
-        pass
+    def reconhecer_entrada(self, entrada, lista_criacao, objetos):
+        pilha_entrada = []
+        # cria uma pilha com os valores da entrada
+        for letra in entrada:
+            pilha_entrada.append(letra)
+        pilha_entrada.reverse()
+        # cria uma pilha de reconhecimento
+        pilha = []
+        pilha.append("$")
+        pilha.append(objetos[0].esquerda) # o primeiro item da pilha é o primeiro da gramática
+        # pega último item da pilha_entrada e o último da pilha, vê a relação e substitui ele
+
 
     def is_non_terminal(self, caracter):
         if "'" in caracter:
