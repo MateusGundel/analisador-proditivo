@@ -1,4 +1,4 @@
-# Reconhecedor-gramatica
+# Analisador - preditivo
 Trabalho desenvolvido para a disciplina de Compiladores da UNISC
 
 ## Como executar
