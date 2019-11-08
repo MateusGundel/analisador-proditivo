@@ -47,7 +47,7 @@ class Analiser():
                     follow_list.update({objeto: ["$"]})
         return follow_list
 
-    def criar_ações(self, objetos, first_list, follow_list):
+    def criar_acoes(self, objetos, first_list, follow_list):
         lista_criacao = []
         for objeto in objetos:
             for i, item in enumerate(objetos[objeto]):
@@ -62,9 +62,37 @@ class Analiser():
                         {"m": {objeto: follow_list[objeto]}, "acao": objeto + " -> " + str(item)})
         return lista_criacao
 
-    def preencher_tabela(self):
-        pass
-
+    def preencher_tabela(self, lista_criacao):
+        print(lista_criacao)
+        list_nt = []
+        list_t = [" "]
+        final_list = []
+        for item in lista_criacao:
+            for a in item['m']:
+                if not a in list_nt:
+                    list_nt.append(a)
+                if not item['m'][a] in list_t:
+                    list_t.append(item['m'][a])
+        final_list = []
+        final_list.append(list_t)
+        for x in range(len(list_nt)):
+            temp_list = []
+            for y in range(len(list_t)):
+                added = False
+                if y == 0:
+                    temp_list.append(list_nt[x])
+                    added = True
+                else:
+                    for item in lista_criacao:
+                        for a in item['m']:
+                            if a == list_nt[x] and item['m'][a] == list_t[y]:
+                                temp_list.append(item['acao'])
+                                added = True
+                if(not added):
+                    temp_list.append(" ")                
+            final_list.append(temp_list)
+        return final_list
+                
     def reconhecer_entrada(self):
         pass
 

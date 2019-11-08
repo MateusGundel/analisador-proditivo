@@ -90,14 +90,26 @@
                         <h4 class="m-0 font-weight-bold text-white">Resultado</h4>
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">[[finalResult.message]]</h5>
-                        <h5 class="card-title">[[finalResult.gramatica]]</h5>
-                        <div ng-repeat="sentenca in finalResult.sentencas track by $index">
-                            <div class="form-group form-inline">
-                                <span class="mx-1">Sentença [[$index+1]] =</span>
-                                <input class="form-control mx-1" type="text" ng-model="sentenca" readonly>
-                            </div>
+                        <h5 class="card-title">First</h5>
+                        <div ng-repeat="(key, value) in finalResult.first track by $index">
+                            First([[key]]) = [[value]]
                         </div>
+                        <br>
+                        
+                        <h5 class="card-title">Follow</h5>
+                        <div ng-repeat="(key, value) in finalResult.follow track by $index">
+                                Follow([[key]]) = [[value]]
+                        </div>
+                        <br>
+
+                        <h5 class="card-title">Tabela</h5>
+                        <table>
+                        <tr ng-repeat="sentenca in finalResult.tabela track by $index">
+                        <td ng-repeat="value in sentenca track by $index"> [[value]]</td> 
+                        </tr>
+                        </table>
+                        <br>
+
                     </div>
                 </div>
             </div>

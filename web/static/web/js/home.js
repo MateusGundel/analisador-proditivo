@@ -5,7 +5,7 @@ app.config(function ($interpolateProvider) {
 
 app.controller('myCtrl', function ($scope, $http) {
     // $scope.listItem = [{id: 0, esquerda: '', direita: ''}];
-    $scope.listItem = [{id: 0, esquerda: "E", direita: "TE'"}, {id: 1, esquerda: "E'", direita: "+TE' | e"}, {id: 2, esquerda: "T", direita: "a"}];
+    $scope.listItem = [{id: 0, esquerda: "S", direita: "TS'"}, {id: 1, esquerda: "S'", direita: "+TS' | e"}, {id: 2, esquerda: "T", direita: "a"}];
     $scope.finalResult = "";
     $scope.isFinalResult = false;
     $scope.addItem = function () {

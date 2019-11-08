@@ -22,7 +22,9 @@ def analisar(request):
         analisador = analiser.Analiser()
         first_list = analisador.create_first(objetos_tratados)
         follow_list = analisador.create_follow(objetos_tratados)
-        print(analisador.criar_ações(objetos_tratados, first_list, follow_list))
+        acoes = analisador.criar_acoes(objetos_tratados, first_list, follow_list)
+        tabela = analisador.preencher_tabela(acoes)
+        response_data.update({"tabela": tabela, "first": first_list, "follow": follow_list, "acoes": acoes})
         print(response_data)
         return HttpResponse(
             json.dumps(response_data)
