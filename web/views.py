@@ -1,10 +1,8 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, HttpResponse, Http404
 import json
-import daemon.reconhecedor.gramatica as gramatica
-import daemon.reconhecedor.consistencia as consistencia
-import daemon.reconhecedor.sentencas as sentencas
 import daemon.transformar.transformar_glc as transformar_glc
+import daemon.analisador.analiser as analiser
 
 
 # Create your views here.
@@ -19,9 +17,12 @@ def analisar(request):
         response_data = {}
         print(object_from_view)
         transform = transformar_glc.transformation()
-        # print(transform.recursao_a_esquerda(transform.tratar_objeto(object_from_view)))
-        objetos_tratados = transform.tratar_objeto(object_from_view)
 
+        objetos_tratados = transform.tratar_objeto(object_from_view)
+        analisador = analiser.Analiser()
+        print(analisador.create_first(objetos_tratados))
+        print(analisador.create_follow(objetos_tratados))
+        
         print(response_data)
         return HttpResponse(
             json.dumps(response_data)

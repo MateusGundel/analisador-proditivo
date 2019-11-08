@@ -2,11 +2,50 @@ class Analiser():
     def __init__(self):
         pass
 
-    def create_first(self):
-        pass
+    def create_first(self, objetos):
+        first_list = {}
+        for objeto in objetos:
+            for string in objetos[objeto]:
+                string_separada = list(string)
+                letter_check = string_separada[0]
+                while self.is_non_terminal(letter_check):
+                    letter_check = list(objetos[letter_check])[0]
 
-    def create_follow(self):
-        pass
+                if objeto in first_list:
+                    first_list[objeto].append(letter_check)
+                else:
+                    first_list.update({objeto: [letter_check]})
+        return first_list
+
+    def create_follow(self, objetos):
+        initial_letter = None
+        follow_list = {}
+        for i, objeto in enumerate(objetos):
+            for j, objeto2 in enumerate(objetos):
+                for prod in objetos[objeto2]:
+                    for num_letter, letter in enumerate(self.get_list_from_prod(prod)):
+                        if letter == objeto:
+                            if num_letter+1 < len(self.get_list_from_prod(prod)):
+                                letter_check = self.get_list_from_prod(prod)[num_letter + 1]
+                                while self.is_non_terminal(letter_check):
+                                    letter_check = self.get_list_from_prod(objetos[letter_check][0])[0]
+                                if objeto in follow_list:
+                                    if not letter_check in follow_list[objeto]:
+                                        follow_list[objeto].append(letter_check)
+                                else:
+                                    follow_list.update({objeto: [letter_check]})
+                        if i == j and letter == objeto and i != 0:
+                            if objeto in follow_list:
+                                follow_list[objeto].append(follow_list[initial_letter])
+                            else:
+                                follow_list.update({objeto: follow_list[initial_letter]})
+            if i == 0:
+                initial_letter = objeto
+                if objeto in follow_list:
+                    follow_list[objeto].append("$")
+                else:
+                    follow_list.update({objeto: ["$"]})
+        return follow_list
 
     def criar_ações(self):
         pass
@@ -17,8 +56,27 @@ class Analiser():
     def reconhecer_entrada(self):
         pass
 
-    def is_terminal(self, caracter):
+    def is_non_terminal(self, caracter):
+        if "'" in caracter:
+            caracter = caracter.replace("'", "")
         list_non_terminal = ['A', 'B', 'C', 'D', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
                              'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-        return caracter.replace("'", "") in list_non_terminal
+        return caracter in list_non_terminal
 
+    def get_list_from_prod(self, prod):
+        lista = list(prod)
+        index = 0
+        while index != -10:
+            index = -10
+            for i, item in enumerate(lista):
+                if item == "'":
+                    index = i
+                    break
+            if index != -10:
+                lista[index-1] = lista[index-1] + "'"
+            final_list = []
+            for a in lista:
+                if a != "'":
+                    final_list.append(a)
+            lista = final_list
+        return lista
