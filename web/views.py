@@ -20,9 +20,9 @@ def analisar(request):
 
         objetos_tratados = transform.tratar_objeto(object_from_view)
         analisador = analiser.Analiser()
-        print(analisador.create_first(objetos_tratados))
-        print(analisador.create_follow(objetos_tratados))
-        
+        first_list = analisador.create_first(objetos_tratados)
+        follow_list = analisador.create_follow(objetos_tratados)
+        print(analisador.criar_ações(objetos_tratados, first_list, follow_list))
         print(response_data)
         return HttpResponse(
             json.dumps(response_data)

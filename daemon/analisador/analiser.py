@@ -25,7 +25,7 @@ class Analiser():
                 for prod in objetos[objeto2]:
                     for num_letter, letter in enumerate(self.get_list_from_prod(prod)):
                         if letter == objeto:
-                            if num_letter+1 < len(self.get_list_from_prod(prod)):
+                            if num_letter + 1 < len(self.get_list_from_prod(prod)):
                                 letter_check = self.get_list_from_prod(prod)[num_letter + 1]
                                 while self.is_non_terminal(letter_check):
                                     letter_check = self.get_list_from_prod(objetos[letter_check][0])[0]
@@ -47,8 +47,20 @@ class Analiser():
                     follow_list.update({objeto: ["$"]})
         return follow_list
 
-    def criar_ações(self):
-        pass
+    def criar_ações(self, objetos, first_list, follow_list):
+        lista_criacao = []
+        for objeto in objetos:
+            for i, item in enumerate(objetos[objeto]):
+                if i % 2 == 0:
+                    list = []
+                    for detail in first_list[objeto]:
+                        if detail != 'e':
+                            list.append(detail)
+                    lista_criacao.append({"m": {objeto: list}, "acao": objeto + " -> " + str(item)})
+                else:
+                    lista_criacao.append(
+                        {"m": {objeto: follow_list[objeto]}, "acao": objeto + " -> " + str(item)})
+        return lista_criacao
 
     def preencher_tabela(self):
         pass
@@ -73,7 +85,7 @@ class Analiser():
                     index = i
                     break
             if index != -10:
-                lista[index-1] = lista[index-1] + "'"
+                lista[index - 1] = lista[index - 1] + "'"
             final_list = []
             for a in lista:
                 if a != "'":
