@@ -12,6 +12,7 @@ def home_view(request):
 
 @csrf_exempt
 def analisar(request):
+    entrada = "a + a + a $"
     if request.method == 'POST':
         object_from_view = json.loads(request.body)
         response_data = {}
@@ -24,6 +25,8 @@ def analisar(request):
         follow_list = analisador.create_follow(objetos_tratados)
         acoes = analisador.criar_acoes(objetos_tratados, first_list, follow_list)
         tabela = analisador.preencher_tabela(acoes)
+        reconhece = analisador.reconhecer_entrada(entrada, acoes, objetos_tratados)
+        print(reconhece)
         response_data.update({"tabela": tabela, "first": first_list, "follow": follow_list, "acoes": acoes})
         print(response_data)
         return HttpResponse(

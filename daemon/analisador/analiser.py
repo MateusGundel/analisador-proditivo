@@ -63,6 +63,7 @@ class Analiser():
         return lista_criacao
 
     def preencher_tabela(self, lista_criacao):
+        print("tabela")
         print(lista_criacao)
         list_nt = []
         list_t = [" "]
@@ -94,17 +95,64 @@ class Analiser():
         return final_list
                 
     def reconhecer_entrada(self, entrada, lista_criacao, objetos):
+        # declaração de variáveis
+        global conjunto
+        response_data = {}
         pilha_entrada = []
-        # cria uma pilha com os valores da entrada
-        for letra in entrada:
-            pilha_entrada.append(letra)
-        pilha_entrada.reverse()
-        # cria uma pilha de reconhecimento
         pilha = []
+        # cria uma pilha com os valores da entrada
+        pilha_entrada = entrada.split(" ")
+        pilha_entrada.reverse()
+        # define o primeiro simbolo da pilha de reconhecimento
         pilha.append("$")
-        pilha.append(objetos[0].esquerda) # o primeiro item da pilha é o primeiro da gramática
-        # pega último item da pilha_entrada e o último da pilha, vê a relação e substitui ele
-
+        #adiciona o priemiro não terminar da gramática na pilha
+        for a in objetos:
+            pilha.append(a)
+            break
+        # verifica se o último da pilha é um não terminal
+        while pilha[len(pilha)-1] != '$':
+            if self.is_non_terminal(pilha[len(pilha)-1]):
+                    # iteração na lista de ações
+                    # print("reconhece = ", reconhece)
+                    for item in lista_criacao:
+                        reconhece = 0
+                        for a in item['m']:
+                            # compara o item do topo da pilha com e o item do topo da pilha de entrada com as ações motnadas
+                            # print("pilha ", pilha[len(pilha)-1])
+                            # print("pilha entrada ", pilha_entrada[len(pilha_entrada)-1])
+                            # print("item [m] ", item['m'])
+                            if pilha[len(pilha)-1] in item['m'] and item['m'][a][0] == pilha_entrada[len(pilha_entrada)-1]:
+                                pilha.pop()
+                                # print("ação ", item['acao'])
+                                aux = []
+                                for b in item['acao'].split("> ")[1]:
+                                    if b == "'":
+                                        aux[len(aux) - 1] = aux[len(aux) - 1] + b
+                                    else:
+                                        aux.append(b)
+                                aux.reverse()
+                                for i in aux:
+                                    pilha.append(i)
+                                reconhece = 1
+                                conjunto = {'conjunto': [item['m'][a], pilha_entrada[len(pilha_entrada)-1]]}
+                                # print(conjunto)
+                                break
+                        if reconhece == 0:
+                            response_data = {'status': "Não reconheceu"}
+                        # quando o topo das duas são não terminais iguais, retira das duasvii
+                    #print("reconhece depois do for ", reconhece)
+                #verifica se o topo da pilha é igual ao topo da pilha de entrada
+            elif pilha[len(pilha)-1] == 'e':
+                pilha.pop()
+            elif pilha_entrada[len(pilha_entrada) - 1][0] == pilha[len(pilha)-1] and pilha[len(pilha)-1] != '$':
+                    pilha_entrada.pop()
+                    pilha.pop()
+                    reconhece = 1
+            if pilha[len(pilha)-1] == '$':
+                    response_data = {'status': "Reconhecido"}
+            print("entrada: ", pilha_entrada)
+            print("pilha: ", pilha)
+        return response_data
 
     def is_non_terminal(self, caracter):
         if "'" in caracter:
